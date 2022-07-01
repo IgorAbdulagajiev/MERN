@@ -18,7 +18,7 @@ import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-
 dotenv.config();
 
 const login = process.env.MONGO_LOGIN;
-const pass = process.env.NONGO_PASS;
+const pass = process.env.MONGO_PASS;
 
 mongoose
   .connect(
