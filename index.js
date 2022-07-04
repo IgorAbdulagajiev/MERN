@@ -66,6 +66,7 @@ app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
 });
 
 app.get("/tags", PostController.getLastTags);
+app.get("/tags/:name", PostController.getPostsByTag);
 
 app.get("/posts/new", PostController.getAllNew);
 app.get("/posts/popular", PostController.getAllPopular);

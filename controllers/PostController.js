@@ -15,6 +15,23 @@ export const getLastTags = async (req, res) => {
   }
 };
 
+export const getPostsByTag = async (req, res) => {
+  try {
+    const tagName = req.params.name;
+    const postsByTag = await PostModel.find({ tags: tagName})
+      .sort({ createdAt: -1 })
+      .populate("user")
+      .exec();
+
+    res.json(postsByTag);
+  } catch(err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Не удалось получить новые статьи по тегам",
+      });
+  }
+}
+
 export const getAllNew = async (req, res) => {
   try {
     const newPosts = await PostModel.find()
