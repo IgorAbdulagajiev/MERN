@@ -18,7 +18,7 @@ export const getLastTags = async (req, res) => {
 export const getPostsByTag = async (req, res) => {
   try {
     const tagName = req.params.name;
-    const postsByTag = await PostModel.find({ tags: tagName})
+    const postsByTag = await PostModel.find({ tags: tagName })
       .sort({ createdAt: -1 })
       .populate("user")
       .exec();

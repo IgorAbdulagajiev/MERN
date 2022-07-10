@@ -1,18 +1,23 @@
 import express from "express";
 import multer from "multer";
-import cors from 'cors';
+import cors from "cors";
 
 import mongoose from "mongoose";
 
 import {
+  commentCreateValidation,
   loginValidation,
   postCreateValidation,
   registerValidation,
 } from "./validations.js";
 
 import { handleValidationErrors } from "./utils/index.js";
-import { UserController, PostController } from "./controllers/index.js";
-import checkAuth from './middleware/checkAuth.js';
+import {
+  UserController,
+  PostController,
+  CommentController,
+} from "./controllers/index.js";
+import checkAuth from "./middleware/checkAuth.js";
 
 import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
@@ -59,7 +64,6 @@ app.post(
 app.get("/auth/me", checkAuth, UserController.getMe);
 
 app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
-  console.log(req.file);
   res.json({
     url: `/uploads/${req.file.originalname}`,
   });
@@ -86,6 +90,17 @@ app.patch(
   handleValidationErrors,
   PostController.update
 );
+app.get("/posts/:id/comments", CommentController.getAllByPostId);
+
+//comments
+app.post(
+  "/comments",
+  checkAuth,
+  commentCreateValidation,
+  handleValidationErrors,
+  CommentController.create
+);
+app.get("/comments", CommentController.getAllNew);
 
 app.listen(4444, (err) => {
   if (err) {
